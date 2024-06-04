@@ -1,8 +1,13 @@
 "use client";
 import { Data } from "@/interfaces/contact";
 import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 import { useForm } from "react-hook-form";
 export default function Form_add() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -10,10 +15,23 @@ export default function Form_add() {
   } = useForm<Data>();
   const [create, setCreate] = useState({});
   const submitChange = (e) => {
-    setCreate({ ...create, [e.target.name]: [e.target.value] });
+    e.preventDefault();
+    setCreate({ ...create, [e.target.name]: e.target.value });
   };
   const onSubmit = (e) => {
     console.log(e);
+    add();
+  };
+  const add = async () => {
+    try {
+      const con = await axios.post("http://localhost:4000/create_info", create);
+      setCreate(con.data);
+      console.log(con.data);
+      alert("Add successfully!");
+      router.push("/feature/select");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>

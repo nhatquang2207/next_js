@@ -5,11 +5,11 @@ import qr from "/next_js/my-next-app/public/images/codeQR.png";
 
 export default function Header() {
   return (
-    <div className="snap-center">
+    <div className="snap-center ">
       <div className="relative">
-        <Image src={section} alt="" className="h-[80%] w-full" />
+        <Image src={section} alt="" className="h-[80%] lg:w-full " />
         <div className="absolute left-24 top-24 ">
-          <div className=" font-serif text-[50px] font-semibold text-yellow-200 ">
+          <div className=" font-serif text-[50px] font-semibold text-yellow-200 md:text-12">
             <p>Grow Through</p>
             <p>Connectivity!</p>
           </div>

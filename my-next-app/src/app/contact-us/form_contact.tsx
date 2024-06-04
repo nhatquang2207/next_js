@@ -3,11 +3,8 @@ import axios from "axios";
 import { Sign_up } from "@/interfaces/contact";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Image from "next/image";
-import Bar_header from "@/component/layout/bar_header";
-import Footer from "@/component/layout/footer";
 import { useState } from "react";
 import contact from "/next_js/my-next-app/public/images/contact-us.png";
-import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 
 function Form_Login() {
@@ -18,32 +15,26 @@ function Form_Login() {
     handleSubmit,
   } = useForm<Sign_up>();
 
-  const [create, setCreate] = useState({});
+  const [login, setLogin] = useState({});
 
-  // const log_in = async () => {
-  //   try {
-  //     const con = await axios.post(
-  //       "http://localhost:3000/check_sign_in",
-  //       create,
-  //     );
-  //     setCreate(con.data);
-  //     if (con.data !== 1) {
-  //       alert("Log in successfully");
-  //     } else {
-  //       console.log("check logIn ", con.data);
-  //       // alert("Log in failed");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const log_in = async () => {
+    try {
+      const con = await axios.post  ("http://localhost:4000/login", login);
+      console.log(con.data);
+      if (con.data===1)
+        {
+          alert("login success")
+        }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const onChange = (e) => {
-    setCreate({ ...create, [e.target.name]: e.target.value });
+    setLogin({ ...login, [e.target.name]: e.target.value });
   };
   const onSubmit: SubmitHandler<Sign_up> = (data) => {
     console.log(data);
-    // log_in();
-    router.push('/')
+    log_in();
   };
 
   return (
@@ -64,7 +55,7 @@ function Form_Login() {
           <label htmlFor="" className="mr-4 ">
             Name: <br />
             <input
-              {...register("users",{required: true})}
+              {...register("users", { required: true })}
               className="w-96 rounded-lg border-2 p-1  "
               placeholder="Type here"
             />{" "}
@@ -105,9 +96,7 @@ function Form_Login() {
             />
           </label>
           {errors.pass && errors.pass.type === "maxLength" && (
-            <p className="text-red-500">
-              Maximum length 20 characters 
-            </p>
+            <p className="text-red-500">Maximum length 20 characters</p>
           )}
         </div>
         <button
@@ -118,7 +107,6 @@ function Form_Login() {
           Send
         </button>
       </form>
-
     </div>
   );
 }

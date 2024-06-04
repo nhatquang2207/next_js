@@ -5,7 +5,7 @@ function Bar_header() {
   return (
     <div>
 
-    <div className="fixed z-10 flex min-w-full flex-row items-center justify-between border-b-2 border-b-yellow-300 bg-[rgba(7,39,48,0.8)] p-4 backdrop-blur  ">
+    <div className="fixed z-10 flex min-w-full flex-row items-center justify-between border-b-2 border-b-yellow-300 bg-[rgba(7,39,48,0.8)] p-4 backdrop-blur lg:w-full md:w-58 sm:w-12 ">
       <a href="http://localhost:5173/">
         {" "}
         <Image
@@ -14,7 +14,7 @@ function Bar_header() {
           width={120}
           height={20}
           priority={true} 
-          className=" ml-6 w-44 flex items-center justify-center "
+          className=" ml-6 w-44 flex items-center justify-center lg:w-full "
         />
       </a>
       <div>
