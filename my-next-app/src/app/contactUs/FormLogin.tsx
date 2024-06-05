@@ -1,40 +1,43 @@
 "use client";
 import axios from "axios";
-import { Sign_up } from "@/interfaces/contact";
+import { SignUp } from "@/interfaces/contact";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Image from "next/image";
 import { useState } from "react";
 import contact from "/next_js/my-next-app/public/images/contact-us.png";
 import { useRouter } from "next/navigation";
 
-function Form_Login() {
+export default function FormLogin() {
   const router = useRouter();
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<Sign_up>();
+  } = useForm<SignUp>();
 
   const [login, setLogin] = useState({});
 
-  const log_in = async () => {
+  const logIn = async () => {
     try {
-      const con = await axios.post  ("http://localhost:4000/login", login);
-      console.log(con.data);
-      if (con.data===1)
-        {
-          alert("login success")
-        }
+      const con = await axios.post("http://localhost:4000/login", login);
+      if (con.data === 1) {
+        alert("Login successfully!");
+        router.push("/feature/select");
+      } else alert("Login Failed. Username or password incorrect!");
     } catch (error) {
       console.log(error);
     }
   };
-  const onChange = (e) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
   };
-  const onSubmit: SubmitHandler<Sign_up> = (data) => {
-    console.log(data);
-    log_in();
+  const onSubmit = (e: SignUp) => {
+    console.log(e);
+    logIn();
   };
 
   return (
@@ -58,6 +61,7 @@ function Form_Login() {
               {...register("users", { required: true })}
               className="w-96 rounded-lg border-2 p-1  "
               placeholder="Type here"
+              onChange={handleChange}
             />{" "}
           </label>
           {errors.users && (
@@ -75,7 +79,7 @@ function Form_Login() {
               })}
               className="w-96 rounded-lg border-2 p-1"
               placeholder="Type here"
-              onChange={onChange}
+              onChange={handleChange}
             />
           </label>
           {errors.email && (
@@ -93,6 +97,7 @@ function Form_Login() {
               {...register("pass", { required: true, maxLength: 20 })}
               className="h-40 w-96 rounded-lg border-2 p-1"
               placeholder="Type here"
+              onChange={handleChange}
             />
           </label>
           {errors.pass && errors.pass.type === "maxLength" && (
@@ -110,5 +115,3 @@ function Form_Login() {
     </div>
   );
 }
-
-export default Form_Login;

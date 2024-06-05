@@ -6,33 +6,38 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  params: { id: string }
-}
-export default function Page({params}: Props) {
+  params: { id: string };
+};
+export default function Page({ params }: Props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Data>();
-  const [Edit, setEdit] = useState({});
-  const submitChange = (e) => {
-    setEdit({ ...Edit, [e.target.name]: e.target.value });
+  const [edit, setEdit] = useState({});
+  const submitChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setEdit({ ...edit, [e.target.name]: e.target.value });
   };
-  const onSubmit = (data) => {
+  const onSubmit = (data: Data) => {
     console.log(data);
     update();
   };
   const router = useRouter();
-  const update = async () =>{
+  const update = async () => {
     try {
-       const con = await axios.put(`http://localhost:4000/update_info/${params.id}`,Edit)
-       console.log(con.data)
+      const con = await axios.put(
+        `http://localhost:4000/update_info/${params.id}`,
+        edit,
+      );
+      console.log(con.data);
       //  alert("Updated Successfully! ")
-      router.push("/feature/select")
+
+      router.push("/feature/select");
+      router.refresh();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -72,7 +77,7 @@ export default function Page({params}: Props) {
             placeholder="Type here"
             onChange={submitChange}
           />
-          <button className="ml-64 rounded-xl bg-blue-800 p-4  " >Update</button>
+          <button className="ml-64 rounded-xl bg-blue-800 p-4  ">Update</button>
         </form>
       </div>
     </div>

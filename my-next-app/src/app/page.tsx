@@ -1,15 +1,15 @@
-import Bar_header from "@/component/layout/bar_header";
+import HeaderBar from "@/component/layout/headerBar";
 import Footer from "@/component/layout/footer";
 import Header from "@/component/layout/header";
-import List_main from "@/component/layout/list_main";
+import ListMain from "@/component/layout/ListMain";
 
 export default function Home() {
   return (
     <div className="h-screen snap-y snap-mandatory overflow-x-hidden  ">
-      <Bar_header />
+      <HeaderBar />
       <Header />
-      <List_main />
-      <Footer/>
+      <ListMain />
+      <Footer />
     </div>
   );
 }

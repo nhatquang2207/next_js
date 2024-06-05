@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Title from "@/component/feature/title";
 import Link from "next/link";

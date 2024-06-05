@@ -50,23 +50,25 @@ const update_info = (req, res) => {
     const pass = crypto.MD5(req.body.pass).toString()
   pool.query(query.login, [name, pass], (err, result) => {
     if (result.rows.length)
-      res.status(200).send("login successfully"+name)   
+      res.status(200).send("1") 
     else
-      res.status(200).send("Login fail. Users or password incorrectly!"+name +pass)
+      res.status(200).send("0")
 
   })
 }
 const register = (req, res) => {
-  const { name, email } = req.body
+  const name = req.body.users
+  const email = req.body.email
+
   const pass = crypto.MD5(req.body.pass).toString()
   pool.query(query.check_register, [name], (err, result) => {
     if (result.rows.length) {
-      res.status(200).send("users already exist")
+      res.status(200).send("1")
     }
     else {
       pool.query(query.register, [name, email, pass], (err, result) => {
         if (err) throw err;
-        res.status(200).send("register successfully!")
+        res.status(200).send("register successfully!"+name)
       })
     }
   })

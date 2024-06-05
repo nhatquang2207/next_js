@@ -1,11 +1,11 @@
-import React from 'react'
-import Form_add from './form_add'
+import React from "react";
+import FormAdd from "./formAdd";
 
 export default function page() {
   return (
-    <div className='h-screen pt-10'>
-        <h1 className='text-3xl text-center pb-10'>Add member </h1>
-      <Form_add/>
+    <div className="h-screen pt-10">
+      <h1 className="pb-10 text-center text-3xl">Add member </h1>
+      <FormAdd />
     </div>
-  )
+  );
 }

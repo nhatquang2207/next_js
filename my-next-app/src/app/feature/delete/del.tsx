@@ -6,8 +6,6 @@ import { useState } from "react";
 
 export default function Del({ product }: { product: Data }) {
   const router = useRouter();
-
-  
   const [modal, setModal] = useState(true);
   const remove = async () => {
     try {
@@ -19,9 +17,6 @@ export default function Del({ product }: { product: Data }) {
     } catch (error) {
       console.log(error);
     }
-  };
-  const check_del = () => {
-    setModal(false);
   };
 
   return (
@@ -35,13 +30,14 @@ export default function Del({ product }: { product: Data }) {
       </button>
 
       {!modal && (
-        <div className="fixed  inset-x-0 top-24  z-50 flex items-center justify-center">
+        <div className="fixed  inset-x-0 top-24  flex items-center justify-center">
           <div className="fixed inset-0 bg-black bg-opacity-50"></div>
           <div className="z-50 rounded-lg bg-white p-6 shadow-lg">
             <div className="flex items-center justify-between pb-3">
-              <p className="text-2xl font-bold">
-                Bạn có chắc muốn xóa người dùng {product.name} này
-              </p>
+              <div className="text-2xl font-bold">
+              Are you sure you want to delete the user
+                <p className="text-red-600">{product.name} </p>
+              </div>
             </div>
             <div className="flex justify-end space-x-10">
               <button

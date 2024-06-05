@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
-export default function Form_add() {
+export default function FormAdd() {
   const router = useRouter();
 
   const {
@@ -14,11 +14,12 @@ export default function Form_add() {
     formState: { errors },
   } = useForm<Data>();
   const [create, setCreate] = useState({});
-  const submitChange = (e) => {
+  const submitChange = (e : React.ChangeEvent<HTMLInputElement> ) => {
     e.preventDefault();
     setCreate({ ...create, [e.target.name]: e.target.value });
   };
-  const onSubmit = (e) => {
+
+  const onSubmit = (e:Data) => {
     console.log(e);
     add();
   };
@@ -35,7 +36,7 @@ export default function Form_add() {
   };
   return (
     <div>
-      <div className="flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         <form action="" className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="">Name</label>{" "}
           <input
