@@ -1,5 +1,5 @@
 import React from "react";
-import FormLogin from "./formLogin";
+import FormLogin from "./FormLogin";
 // import HeaderBar from "@/component/layout/HeaderBar";
 import Footer from "@/component/layout/footer";
 import HeaderBar from "@/component/layout/headerBar";

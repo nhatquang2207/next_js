@@ -1,5 +1,5 @@
 import React from "react";
-import FormAdd from "./formAdd";
+import FormAdd from "./FormAdd";
 
 export default function page() {
   return (
