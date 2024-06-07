@@ -1,5 +1,5 @@
 import axios from "axios";
-import Title from "@/component/feature/title";
+import Title from "@/component/feature/Title";
 import Link from "next/link";
 export default async function Info() {
   const response = await axios.get("http://localhost:4000/");
