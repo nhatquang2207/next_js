@@ -4,14 +4,17 @@ const footer = ["Circle", "Directory", "Market", "Business"];
 import logo from "/next_js/my-next-app/public/images/logo.png";
 export default function Footer() {
   return (
-    <div className="snap-end bg-black p-16 text-white ">
-      <Image src={logo} width={100} height={100} alt="" className=" w-64 " />
-      <div className="flex border-b-2 border-b-yellow-200 pb-10 ">
-        <div className="pt-2 font-serif text-xl text-white  ">
+    <div className="snap-center bg-black p-16 text-white ">
+      <div className="flex justify-center lg:justify-start">
+        <Image src={logo} width={100} height={100} alt="" className=" w-64 " />
+      </div>
+
+      <div className="border-b-2 border-b-yellow-200 pb-10 lg:flex lg:justify-between ">
+        <div className=" pt-2 text-center font-serif text-xl text-white  lg:text-start ">
           <span>Circle Global, Inc</span>
           <p>12 East 49th Street, 11th Floor</p>
           <p>New York, NY 10017</p>
-          <div className="flex space-x-2 pt-2 ">
+          <div className="flex justify-center space-x-2 pt-2 lg:justify-start">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -62,7 +65,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className=" pl-[250px] ">
+        <div className=" hidden  lg:inline-block  ">
           <h3 className=" text-3xl ">Key Features</h3>
           <div className="flex space-x-16">
             {footer.map((item) => (
@@ -79,9 +82,9 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="flex justify-between pt-6 text-xl">
+      <div className="flex justify-between pt-6 text-sm lg:text-2xl ">
         <p className="font-semibold-">© All rights reserved 2023</p>
-        <div>
+        <div className="space-x-1">
           <a href="">Privacy Policy · </a>
           <a href="">Terms & Conditions</a>
         </div>

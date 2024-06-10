@@ -28,7 +28,7 @@ const datas: list_data[] = [
       " From connecting with your neighborhood peers to seeking advice and finding collaboration opportunities, Circle is more than just a forum - create and join your own groups!",
     bg: "bg-green-700",
     text: "text-white",
-    style: "flex ",
+    style: "flex items-center",
   },
   {
     id: "Directory",
@@ -58,7 +58,7 @@ const datas: list_data[] = [
       " Our Directory is your gateway to trusted local businesses, where you can find and partner with vetted vendors",
     bg: "bg-white",
     text: "text-black",
-    style: "flex flex-row-reverse",
+    style: "flex flex-row-reverse items-center",
   },
   {
     id: "Market",
@@ -88,7 +88,7 @@ const datas: list_data[] = [
       "  Buy, sell, or give away items with your neighbors in the business community",
     bg: "bg-green-700",
     text: "text-white",
-    style: "flex ",
+    style: "flex items-center",
   },
   {
     video: "/videos/video_1.mp4",
@@ -118,7 +118,7 @@ const datas: list_data[] = [
       " Dive into the latest trends and industry news, compare your performance with local peers to unlock opportunities for growth",
     bg: "bg-white",
     text: "text-black",
-    style: "flex flex-row-reverse",
+    style: "flex flex-row-reverse items-center",
   },
   {
     video: "/videos/video_1.mp4",
@@ -139,7 +139,6 @@ const datas: list_data[] = [
       </svg>
     ),
     id: "Business",
-
     title: "Business",
     name: "Discover the Next Chapter in Your Business Journey",
     describe1:
@@ -148,7 +147,7 @@ const datas: list_data[] = [
       "  Whether you're eyeing expansion or considering selling your business, Circle connects you to a network of potential buyers or sellers",
     bg: "bg-green-700 ",
     text: "text-white",
-    style: "flex ",
+    style: "flex items-center",
   },
   {
     video: "/videos/video_1.mp4",
@@ -178,7 +177,7 @@ const datas: list_data[] = [
       " Communicate with your team instantly, place or receive last-minute grocery orders, and engage with your groups in the neighborhood, all at your fingertips",
     bg: "bg-white",
     text: "text-black",
-    style: "flex flex-row-reverse",
+    style: "flex flex-row-reverse items-center",
   },
 ];
 function List_main() {
@@ -188,22 +187,25 @@ function List_main() {
         <div
           key={item.id}
           id={item.title}
-          className={` ${item.style}  ${item.bg} min-h-screen snap-end p-4 pl-16 pt-16 `}
+          className={`${item.bg} snap-end lg:${item.style} lg:min-h-screen`}
         >
-          <video autoPlay loop muted className="w-[30rem]">
+          <video
+            autoPlay
+            loop
+            muted
+            className="flex h-72 w-full items-center justify-center pt-20  lg:pt-2"
+          >
             <source src={item.video} type="" />
           </video>
-          <div className="pl-12 pt-10  ">
-            <span className=" flex items-center text-4xl  font-medium text-[#24babf] ">
+          <div className="pl-12  ">
+            <span className="flex items-center text-xl  font-medium text-[#24babf] lg:text-4xl ">
               {item.icon}
               {item.title}
             </span>
-            <h2 className="pt-4 text-5xl font-semibold text-yellow-200 ">
+            <h2 className=" text-lg font-semibold text-yellow-200 lg:text-3xl ">
               {item.name}
             </h2>
-            <ul
-              className={`${item.text} mr-24 list-disc space-y-6 pl-7 pt-10 text-2xl`}
-            >
+            <ul className={`${item.text}  list-disc  pl-7  text-sm lg:text-3xl`}>
               <li className="">{item.describe1}</li>
               <li className="">{item.describe2}</li>
             </ul>

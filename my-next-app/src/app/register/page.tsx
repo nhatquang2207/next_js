@@ -1,5 +1,5 @@
 import React from "react";
-import FormRegister from "./formRegister";
+import FormRegister from "./FormRegister";
 
 export default function Page() {
   return (
