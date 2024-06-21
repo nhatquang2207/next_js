@@ -1,13 +1,19 @@
 import axios from "axios";
 import Title from "@/component/feature/Title";
 import Link from "next/link";
+import LogOut from "../logout/page";
+
 export default async function Info() {
+
   const response = await axios.get("http://localhost:4000/");
   const todo = response.data;
   return (
     <div className="h-screen ">
       <div className="">
         <h1 className="text-center text-3xl ">Danh sach</h1>
+        <LogOut/>
+
+            
         <div className="ml-20 grid grid-cols-4 px-6 pt-10   text-red-600 ">
           <h3> Name</h3>
           <h3> City</h3>

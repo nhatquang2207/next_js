@@ -1,10 +1,8 @@
 import React from "react";
 import FormLogin from "./FormLogin";
-// import HeaderBar from "@/component/layout/HeaderBar";
-import Footer from "@/component/layout/Footer";
+import Footer from "@/component/layout/footer";
 import HeaderBar from "@/component/layout/HeaderBar";
-
-export default function page() {
+export default function Page({ }) {
   return (
     <div>
       <HeaderBar />

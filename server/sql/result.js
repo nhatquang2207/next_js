@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config()
 const query = require('./query');
 const jwt = require('jsonwebtoken')
 const secretKey = process.env.secretKey
-const accessKeyLife = { expiresIn: '1h' }
+const accessKeyLife = { expiresIn: '30s' }
 // const refreshKey = "refresh-token-token-token"
 const select = (req, res) => {
   pool.query(query.select, (err, result) => {
@@ -12,8 +12,8 @@ const select = (req, res) => {
       console.error('Error executing query', err);
     }
     else {
+      console.log(req.headers.token)
       res.status(200).send(result.rows)
-      console.log(secretKey, accessKeyLife)
     }
 
 
@@ -66,11 +66,16 @@ const login = (req, res) => {
       }]
       const token = jwt.sign({ data: dataToke }, secretKey, accessKeyLife);
       const deCode = jwt.verify(token, secretKey)
-      res.status(200).send({ data: result.rows, message: "Login successfully", type: true, token: token })
-      console.log(token)
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: 3600000, // 1 hour
+      });
+      res.status(200).json({ token })
+
     }
     else
-      res.status(200).send({ message: "Error users or password", type: false })
+      res.status(201).send({ message: "Error users or password", type: false })
 
   })
 }
