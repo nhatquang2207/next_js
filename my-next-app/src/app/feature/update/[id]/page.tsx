@@ -4,18 +4,19 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-
+import cookies from "js-cookie";
 type Props = {
   params: { id: string };
 };
 export default function Page({ params }: Props) {
+  const token = cookies.get("Token");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Data>();
   const [edit, setEdit] = useState({});
-  const submitChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const submitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEdit({ ...edit, [e.target.name]: e.target.value });
   };
   const onSubmit = (data: Data) => {
@@ -28,6 +29,7 @@ export default function Page({ params }: Props) {
       const con = await axios.put(
         `http://localhost:4000/update_info/${params.id}`,
         edit,
+        { headers: {Authentication: `Bearer ${token}`}},
       );
       console.log(con.data);
       //  alert("Updated Successfully! ")

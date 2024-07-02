@@ -10,17 +10,17 @@ const port = process.env.PORT
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(cors())
-app.get('/select_id/:personid', result.select_id)
-app.post('/create_info', result.create_info)
-app.delete('/delete_info/:id', result.delete_info)
-app.put('/update_info/:id', result.update_info)
 app.post("/register", result.register)
 app.post("/login", result.login)
 
 app.use(auMiddle.isAuth)
-
+app.post('/create_info', result.create_info)
+app.put('/update_info/:id', result.update_info)
+app.delete('/delete_info/:id', result.delete_info)
+app.get('/select_id/:name', result.select_id)
+app.post('/logout', result.logout)
 app.get('/', result.select)
 
 app.listen(port, () => {
-    console.log("listening on port: " + port)
+    console.log("Listening on port: " + port)
 })

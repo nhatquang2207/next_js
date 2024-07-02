@@ -3,29 +3,36 @@ import { Data } from "@/interfaces/contact";
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
 import { useForm } from "react-hook-form";
-export default function FormAdd() {
-  const router = useRouter();
+import Cookies from "js-cookie";
 
+export default function FormAdd() {
+  const token = Cookies.get("Token");
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Data>();
   const [create, setCreate] = useState({});
-  const submitChange = (e : React.ChangeEvent<HTMLInputElement> ) => {
+  const submitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setCreate({ ...create, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e:Data) => {
+  const onSubmit = (e: Data) => {
     console.log(e);
     add();
   };
   const add = async () => {
     try {
-      const con = await axios.post("http://localhost:4000/create_info", create);
+      const con = await axios.post(
+        "http://localhost:4000/create_info",
+        create,
+        {
+          headers: { Authentication: `Bearer ${token}` },
+        },
+      );
       setCreate(con.data);
       console.log(con.data);
       alert("Add successfully!");

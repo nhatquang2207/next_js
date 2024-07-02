@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const selectPage = "/feature/select";
+const selectPage = '/feature/select';
 const authPage = ["/register","/contactUs"]
-export function middleware(request: NextRequest) {
+export  async function middleware(request: NextRequest) {
 
   const token = request.cookies.get("Token")?.value;
+  console.log("author",token)
+  
   if (request.nextUrl.pathname.startsWith(selectPage) && !token) {
     return NextResponse.redirect(new URL("/contactUs", request.url));
   }
@@ -17,5 +19,5 @@ export function middleware(request: NextRequest) {
 }
 //  features to be authenticated
 export const config = {
-  matcher: ['/feature/select/', "/register","/contactUs"],
+  matcher: ['/feature/select' , "/register","/contactUs"],
 };
