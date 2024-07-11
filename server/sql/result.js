@@ -1,172 +1,175 @@
-const pool = require("../connect/connect");
-const crypto = require("crypto-js")
 const dotenv = require('dotenv').config()
-const query = require('./query');
 const jwt = require('jsonwebtoken')
 const secretKey = process.env.SESSION_TOKEN_SECRET
-const accessKeyLife = { expiresIn: '7d' }
-const express = require('express');
+const accessKeyLife = { expiresIn: '10s' }
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const app = express();
-
+const { compareAsc, parseISO } = require('date-fns');
 // const refreshKey = "refresh-token-token-token"
 const select = async (req, res) => {
   const users = await prisma.product.findMany();
   if (users)
-    res.status(200).send(users)
+    res.status(200).json(users)
   else {
     console.error('Error executing query');
   }
 }
 const select_id = async (req, res) => {
   const user = req.params.name
-  console.log(user)
-  const userID = await prisma.product.findUnique({
-    where: {
-      name: user
+  try {
+    const userID = await prisma.product.findUnique({
+      where: {
+        name: user,
+      }
+    })
+    if (userID)
+      res.status(200).json(userID)
+    else {
+      res.status(200).json("Not found user")
     }
-  })
-  if (userID)
-    res.status(200).json(userID)
-  else {
-    res.status(200).json("Not found user")
+  } catch (error) {
+    console.log(error.code)
   }
-
-
 }
 const create_info = async (req, res) => {
   const { name, city, date } = req.body
   const expiresAt = new Date(date)
-
-  const create = await prisma.product.create({
-    data: {
-      name: name,
-      city: city,
-      Date: expiresAt,
-    }
-  })
-  console.log(create)
-  if (create)
-    res.status(200).json({ message: "Add successfully created!" })
-  else {
-    res.json("Unsuccessfully!")
+  try {
+    const create = await prisma.product.create({
+      data: {
+        name: name,
+        city: city,
+        Date: expiresAt,
+      }
+    })
+    if (create)
+      res.status(200).json({ message: "Add successfully created!" })
+  } catch (error) {
+    if (error.code === 'P2002')
+      res.json({ message: `Name product ${name} already exists` })
   }
 
 }
 const delete_info = async (req, res) => {
   const id = parseInt(req.params.id)
-  const deleteID = await prisma.product.delete({
-    where: {
-      id: id
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: id },
+    });
+    if (product) {
+      await prisma.product.delete({
+        where: {
+          id: id
+        }
+      })
+      res.status(200).send({ message: "Successfully delete product" })
     }
-  })
-  if (deleteID)
-    res.status(200).json({ message: " Successfully " })
-  else {
-    res.json({ message: "Not found" })
-  }
+    else {
+      res.send({ message: "Not found product to delete" })
+    }
 
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
 const update_info = async (req, res) => {
   const { name, city, date } = req.body
   const expiresAt = new Date(date)
   const id = parseInt(req.params.id)
-  // pool.query(query.update_info, [name, city, date, id], (err, result) => {
-  //   if (err) throw err;
-  //   res.status(200).send("update successfully");
-  // })
-  const update = await prisma.product.update({
-    where: {
-      id: id
-    },
-    data: {
-      name: name,
-      city: city,
-      Date: expiresAt,
+  try {
+    const update = await prisma.product.update({
+      where: {
+        id: id
+      },
+      data: {
+        name: name,
+        city: city,
+        Date: expiresAt,
+      }
+    })
+    if (update)
+      res.status(200).json({ message: " Successful Update!" })
+    else {
+      res.json({ message: " Unsuccessfully update, please try again." })
     }
-
-  })
-  console.log(update)
-  if (update)
-    res.status(200).json({ message: " Successful Update!" })
-  else {
-    res.json({ message: " Unsuccessfully update, please try again." })
+  } catch (error) {
+    if (error.code === 'P2025')
+      res.send({ message: "Not found product to update" })
   }
 }
-const login = (req, res) => {
-  const name = req.body.users
-  const pass = crypto.MD5(req.body.pass).toString()
-  pool.query(query.login, [name, pass], async (err, result) => {
-    if (true) {
-      const dataToke = [{
-        id: result.rows[0].id,
-      }]
-      const token = jwt.sign({ data: dataToke }, secretKey, accessKeyLife);
-      const newToken = await prisma.session.create({
-        data: {
-          token: token,
-          userId: result.rows[0].id,
-          expiresAt: new Date(36000)
-        }
-      })
-      console.log(newToken)
-      // res.cookie('token', token, {
-      //   httpOnly: true,
-      //   secure: false,
-      //   path: "/", // 1 hour
-      // })
-      // res.setHeader('Authorization', `Bearer ${token}`);
-      res.status(200).json({ token })
+const login = async (req, res) => {
+  const { users, pass } = req.body
+  const loginResult = await prisma.user.findUnique({ where: { userName: users, password: pass } })
+  if (loginResult) {
+    const dataToken = {
+      id: loginResult.id,
+      name: loginResult.userName,
     }
-    else
-      res.status(201).send({ message: "Error users or password", type: false })
-  })
+    const token = jwt.sign({ data: dataToken }, secretKey, accessKeyLife);
+    const createToken = await prisma.session.create({
+      data: {
+        token: token,
+        userId: loginResult.id,
+        expiresAt: new Date(Date.now() + 120000)
+      }
+    })
+    res.status(200).send({ message: "LogIn successful!", type: true, token: token })
+  }
+  else
+    res.send({ message: "LogIn failed!, Users or password incorrect ", type: false })
+
 }
 const register = async (req, res) => {
-  const { name, email, pass } = req.body
+  const { users, email, pass } = req.body
+  console.log(users, email, pass)
   try {
     const register = await prisma.user.create({
       data:
       {
-        userName: name,
+        userName: users,
         email: email,
         password: pass
       }
     })
-    res.status(200).send("Successfully registered user!")
+    res.status(200).send({ message: "Successfully registered user!", type: true })
+
   } catch (error) {
     // Handle duplicate email error
     if (error.code === 'P2002' && error.meta?.target?.includes('userName')) {
-      res.status(200).send(`Email ${name} is already registered.`);
+      res.status(200).send({ message: `User name ${users} is already registered.`, type: false });
     } else {
-      res.status('Error creating user:', error);
+      res.status({ message: 'Error creating user:', error });
     }
   }
-  // if (register)
-  //   res.status(200).send({ message: "Register Successfully!", type: true })
-  // else
-  //   res.send({ message: "Unsuccessful register ", type: false })
-  // }
-  // else
-  //   res.status(200).send({ message: "User already exists!" })
 }
-const logOut = (req, res) => {
-  //   req.session.destroy((err) => {
-  //     if (err) {
-  //       console.error('Failed to destroy session:', err);
-  //       return res.status(500).json({ message: 'Failed to destroy session' });
-  //     } else {
-  //       (res.clearCookie('Token'),
-  //       res.status(200).send({ message: "Log Out Successfully" }))
+const logOut = async (req, res) => {
+  const authHeader = req.headers['authentication']
+  const token = authHeader && authHeader.split(' ')[1];
+  try {
+    const delete_cookie = await prisma.session.delete({ where: { token: token } })
+    res.status(200).send({ message: "Successfully deleted session" })
 
-  // } 
+  } catch (error) {
+    console.log(error.code)
+  }
 
-  res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
-  res.status(200).send({ message: "Log Out Successfully" })
 };
 
 
+const check_session = async (sessionToken) => {
+  const check = await prisma.session.findUnique({ where: { token: sessionToken } })
+  if (check) {
+    // set utc time if you want to check timezone
+    const date1 = new Date(Date.now())
+    const date2 = check.expiresAt
+    const result = compareAsc(date1, date2);
+    if (result === 1) {
+      await prisma.session.delete({ where: { token: sessionToken } })
+      return false
+    }
+    return true
+  }
+  else return false
+}
+module.exports = { select, select_id, create_info, delete_info, update_info, login, register, logOut, check_session }
 
-
-module.exports = { select, select_id, create_info, delete_info, update_info, login, register, logout: logOut } 

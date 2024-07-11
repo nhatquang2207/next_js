@@ -20,26 +20,24 @@ export default function Page({ params }: Props) {
     setEdit({ ...edit, [e.target.name]: e.target.value });
   };
   const onSubmit = (data: Data) => {
-    console.log(data);
     update();
   };
   const router = useRouter();
   const update = async () => {
     try {
-      const con = await axios.put(
+      const response = await axios.put(
         `http://localhost:4000/update_info/${params.id}`,
         edit,
-        { headers: {Authentication: `Bearer ${token}`}},
+        { headers: { Authentication: `Bearer ${token}` } },
       );
-      console.log(con.data);
-      //  alert("Updated Successfully! ")
-
-      router.push("/feature/select");
-      router.refresh();
+      alert(response.data.message)
+      router.push('/feature/select')
+      router.refresh()
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div>
       <div className="flex items-center justify-center">

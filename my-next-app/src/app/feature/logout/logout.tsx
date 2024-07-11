@@ -1,8 +1,11 @@
 "use client";
-import React from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
 export default function LogOut() {
+const router = useRouter();
+
   const token = Cookies.get("Token");
   const logOut = async () => {
     try {
@@ -12,7 +15,7 @@ export default function LogOut() {
       if(res.status === 200)
         {
           Cookies.remove('Token')
-          console.log(res.data.message)
+          router.refresh()          
         }
       
     } catch (error) {}

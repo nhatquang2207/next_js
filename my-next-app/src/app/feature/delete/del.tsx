@@ -16,13 +16,21 @@ export default function Del({ product }: { product: Data }) {
           headers: { Authentication: `Bearer ${token}` },
         },
       );
-      if (response.status === 200) router.refresh();
-      else alert("Delete unsuccessfully!");
+      console.log(response)
+      alert(response.data.message)
+      setModal(true);
+      router.refresh()
+
+      // if (response.data.type) {
+      //   alert("Completed Delete  successfully");
+      // } else {
+      //   setModal(true);
+      //   alert("Not accessible edit");
+      // }
     } catch (error) {
-      console.log(error);
+      // console.log(error)
     }
   };
-
   return (
     <div>
       <button

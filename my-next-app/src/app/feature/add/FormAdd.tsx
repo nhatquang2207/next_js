@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
+import { resolve } from "path";
 
 export default function FormAdd() {
   const token = Cookies.get("Token");
@@ -21,22 +22,21 @@ export default function FormAdd() {
   };
 
   const onSubmit = (e: Data) => {
-    console.log(e);
     add();
   };
   const add = async () => {
     try {
-      const con = await axios.post(
+      const response = await axios.post(
         "http://localhost:4000/create_info",
         create,
         {
           headers: { Authentication: `Bearer ${token}` },
         },
       );
-      setCreate(con.data);
-      console.log(con.data);
-      alert("Add successfully!");
+      console.log(response.data)
+      alert(response.data.message); 
       router.push("/feature/select");
+      router.refresh();
     } catch (error) {
       console.log(error);
     }

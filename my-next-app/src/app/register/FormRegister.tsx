@@ -22,14 +22,11 @@ export default function FormRegister() {
 
   const logIn = async () => {
     try {
-      const con = await axios.post("http://localhost:4000/Register", form);
+      const con = await axios.post("http://localhost:4000/register", form);
       if (con.data.type) {
-        setNotification(false);
-        setTextN(false);
-      } else {
-        setNotification(false);
-        setTextN(true);
-      }
+        alert(con.data.message),
+        router.push("/contactUs")
+      }else alert(con.data.message); router.refresh()
     } catch (error) {
       console.log(error);
     }

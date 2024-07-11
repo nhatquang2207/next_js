@@ -12,7 +12,7 @@ model Session {
   token     String   @id 
   userId    Int
   expiresAt DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now() )
 }
 
 model User {

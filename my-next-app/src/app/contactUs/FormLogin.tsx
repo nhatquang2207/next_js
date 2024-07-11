@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useState } from "react";
 import contact from "/next_js/my-next-app/public/images/contact-us.png";
 import { useRouter } from "next/navigation";
+
+
 import cookies from "js-cookie";
 
 export default function FormLogin() {
@@ -21,7 +23,8 @@ export default function FormLogin() {
   const logIn = async () => {
     try {
       const con = await axios.post("http://localhost:4000/login", login);
-      if (con.status === 200) {
+      if (con.data.type) {
+        console.log(con)
         cookies.set("Token", con.data?.token);
         setToken(con.data?.token);
         router.push("/feature/select");

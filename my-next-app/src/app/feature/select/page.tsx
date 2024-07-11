@@ -2,14 +2,12 @@ import axios from "axios";
 import Title from "@/component/feature/Title";
 import Link from "next/link";
 import LogOut from "../logout/logout";
-import { cookies } from 'next/headers'
+import { cookies } from "next/headers";
 export default async function Info() {
-  
-  
-  const cookieStore = cookies()
-  const theme = cookieStore.get('Token')?.value
+  // const [todo,setTodo] = useState() // useEffects()
+  const cookieStore = cookies();
+  const theme = cookieStore.get("Token")?.value;
   const response = await axios.get("http://localhost:4000/");
-  console.log("Token",theme)
   const todo = response.data;
   return (
     <div className="h-screen ">
@@ -29,12 +27,12 @@ export default async function Info() {
         </div>
       </div>
       {todo?.map((item) => (
-        <div className="" key={item.personid}>
+        <div className="" key={item.id}>
           <Title
-            personid={item.personid}
+            personid={item.id}
             name={item.name}
             city={item.city}
-            date={item.date}
+            date={item.Date}
           />
         </div>
       ))}

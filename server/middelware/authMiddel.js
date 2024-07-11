@@ -1,32 +1,46 @@
 const dotenv = require('dotenv').config
 const secretKey = process.env.SESSION_TOKEN_SECRET
-
+const ex = require('express')
+const app = ex();
+const cookieParser = require('cookie-parser');
+const result = require('../sql/result')
 const jwt = require('jsonwebtoken')
-const isAuth = (req, res, next) => {
-
+app.use(cookieParser)
+const isAuth = async (req, res, next) => {
+    //headers authentication token
     const authHeader = req.headers['authentication']
-    const cookie = req.headers
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(cookie)
-    // if (token) {
-    //     const decoded = jwt.verify(token, secretKey, (err, user) => {
-    //         if (err) {
-    //             console.log("Token verification error ", err)
-    //             return res.sendStatus(403)
-    //         } else {
-    //             req.user = user
-    //             console.log(decoded)
-    //             next();
-    //         }
-    //     })
+    if (token) {
+        const check = await result.check_session(token)
+        try {
+            if (check) {
+                next();
+            }
+            else{
+                res.json({message:"You are not allowed to edit"})
+            }
+        } catch (error) {
+            return res.status(404).json({ message: 'Failed to authenticate token' });
 
-    // }
-    // else
-    //     return res.status(403).send({
-    //         message: "Token not found"
-    //     })
-    next();
-
+        }
+    }
+    else {
+        res.status(404).json({message : "Not found token"})
+    }
 
 }
+// if (token) {
+//     const check = await result.check_session(token)
+//     if (check) {
+//         next();
+//     }
+//     else {
+//         //  res.status(404).json({ message: "Token not valid" })
+//          res.json({ message: 'SessionToken not found' });
+//      }
+// } else {
+//     res.json({ message: 'SessionToken not found' });
+// }
+
+
 module.exports = { isAuth }
