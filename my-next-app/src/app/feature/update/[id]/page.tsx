@@ -39,8 +39,9 @@ export default function Page({ params }: Props) {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-center">
+    <div className="h-screen">
+      <h1 className="text-center text-2xl">Update product</h1>
+      <div className="flex items-center justify-center ">
         <form action="" className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="">Name</label>{" "}
           <input

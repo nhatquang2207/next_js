@@ -1,7 +1,7 @@
 import React from "react";
 import { Data } from "@/interfaces/contact";
 import Link from "next/link";
-import Del from "@/app/feature/delete/Del";
+import Del from "@/app/feature/delete/del";
 import { parseISO, format } from "date-fns";
 export default function Title(data: Data) {
   return (
