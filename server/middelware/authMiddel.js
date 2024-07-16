@@ -29,18 +29,7 @@ const isAuth = async (req, res, next) => {
     }
 
 }
-// if (token) {
-//     const check = await result.check_session(token)
-//     if (check) {
-//         next();
-//     }
-//     else {
-//         //  res.status(404).json({ message: "Token not valid" })
-//          res.json({ message: 'SessionToken not found' });
-//      }
-// } else {
-//     res.json({ message: 'SessionToken not found' });
-// }
+
 
 
 module.exports = { isAuth }

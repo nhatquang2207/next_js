@@ -20,7 +20,6 @@ app.post('/create_info', result.create_info)
 app.post('/logout', result.logOut)
 app.put('/update_info/:id', result.update_info)
 app.get('/select_id/:name', result.select_id)
-// app.get('/checkSession', result.check_session())
 app.delete('/delete_info/:id', result.delete_info)
 
 app.listen(port, () => {
