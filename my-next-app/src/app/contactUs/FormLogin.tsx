@@ -115,7 +115,7 @@ export default function FormLogin() {
         <button
           className="w-96 rounded-xl bg-green-500 py-1 text-center"
           type="submit"
-        >
+        > 
           {" "}
           Send
         </button>
