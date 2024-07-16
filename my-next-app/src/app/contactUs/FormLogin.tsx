@@ -83,7 +83,7 @@ export default function FormLogin() {
             <input
               {...register("email", {
                 required: false,
-                // pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
               })}
               className="w-96 rounded-lg border-2 p-1"
               placeholder="Type here"

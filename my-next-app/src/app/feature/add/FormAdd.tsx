@@ -5,7 +5,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
-import { resolve } from "path";
 
 export default function FormAdd() {
   const token = Cookies.get("Token");

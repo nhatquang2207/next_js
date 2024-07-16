@@ -21,14 +21,9 @@ export default function Del({ product }: { product: Data }) {
       setModal(true);
       router.refresh()
 
-      // if (response.data.type) {
-      //   alert("Completed Delete  successfully");
-      // } else {
-      //   setModal(true);
-      //   alert("Not accessible edit");
-      // }
+      
     } catch (error) {
-      // console.log(error)
+      console.log(error)
     }
   };
   return (

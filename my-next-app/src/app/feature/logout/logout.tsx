@@ -20,11 +20,6 @@ const router = useRouter();
       
     } catch (error) {}
 
-    // if (res.status === 200) {
-    //   window.location.href = "/contactUs";
-    // } else {
-    //   alert("Log out unsuccessful!");
-    // }
   };
   return (
     <div className="flex justify-end">
