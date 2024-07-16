@@ -1,5 +1,5 @@
 import React from "react";
-import { list_data } from "@/interfaces/list_info";
+import { list_data } from "@/interfaces/contact";
 const datas: list_data[] = [
   {
     id: "circle",

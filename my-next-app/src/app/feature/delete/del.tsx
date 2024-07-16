@@ -3,22 +3,34 @@ import { Data } from "@/interfaces/contact";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import cookies from "js-cookie";
 export default function Del({ product }: { product: Data }) {
+  const token = cookies.get("Token");
   const router = useRouter();
   const [modal, setModal] = useState(true);
   const remove = async () => {
     try {
       const response = await axios.delete(
         `http://localhost:4000/delete_info/${product.personid}`,
+        {
+          headers: { Authentication: `Bearer ${token}` },
+        },
       );
-      router.refresh();
-      console.log(response.data);
+      console.log(response)
+      alert(response.data.message)
+      setModal(true);
+      router.refresh()
+
+      // if (response.data.type) {
+      //   alert("Completed Delete  successfully");
+      // } else {
+      //   setModal(true);
+      //   alert("Not accessible edit");
+      // }
     } catch (error) {
-      console.log(error);
+      // console.log(error)
     }
   };
-
   return (
     <div>
       <button
@@ -35,7 +47,7 @@ export default function Del({ product }: { product: Data }) {
           <div className="z-50 rounded-lg bg-white p-6 shadow-lg">
             <div className="flex items-center justify-between pb-3">
               <div className="text-2xl font-bold">
-              Are you sure you want to delete the user
+                Are you sure you want to delete the user
                 <p className="text-red-600">{product.name} </p>
               </div>
             </div>

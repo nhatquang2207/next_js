@@ -1,6 +1,6 @@
 import HeaderBar from "@/component/layout/HeaderBar";
-import Footer from "@/component/layout/Footer";
-import Header from "@/component/layout/Header";
+import Footer from "@/component/layout/footer";
+import Header from "@/component/layout/header";
 import ListMain from "@/component/layout/ListMain";
 
 export default function Home() {

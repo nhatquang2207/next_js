@@ -22,13 +22,11 @@ export default function FormRegister() {
 
   const logIn = async () => {
     try {
-      const con = await axios.post("http://localhost:4000/Register", form);
-      if (con.data === 1) {
-        setNotification(false);
-      } else {
-        setNotification(false);
-        setTextN(false);
-      }
+      const con = await axios.post("http://localhost:4000/register", form);
+      if (con.data.type) {
+        alert(con.data.message),
+        router.push("/contactUs")
+      }else alert(con.data.message); router.refresh()
     } catch (error) {
       console.log(error);
     }
@@ -124,23 +122,36 @@ export default function FormRegister() {
             <div className="z-10 rounded-xl  bg-white p-4">
               <div className=" items-center justify-between ">
                 {textN ? (
-                  <p className="text-2xl font-bold">
-                    Users already exist. Please select a new one users
-                  </p>
+                  <div>
+                    <p className="text-2xl font-bold">
+                      Users already exist. Please select a new one users
+                      <div className="flex justify-end ">
+                        <button
+                          className=" pr-10 "
+                          onClick={() => setNotification(true)}
+                        >
+                          <Link href=""> Close</Link>
+                        </button>
+                      </div>
+                    </p>
+                  </div>
                 ) : (
                   <div>
-                    <p className="text-2xl font-bold">Register Successfully!</p>
+                    <div>
+                      <p className="text-2xl font-bold">
+                        Register Successfully!
+                      </p>
+                    </div>
+                    <div className="flex justify-end ">
+                      <button
+                        className=" pr-10 "
+                        onClick={() => setNotification(true)}
+                      >
+                        <Link href=""> Close</Link>
+                      </button>
+                    </div>
                   </div>
                 )}
-
-                <div className="flex justify-end ">
-                  <button
-                    className=" pr-10 "
-                    onClick={() => setNotification(true)}
-                  >
-                    <Link href="/contact-us"> Close</Link>
-                  </button>
-                </div>
               </div>
             </div>
           </div>

@@ -1,33 +1,42 @@
 "use client";
 import axios from "axios";
 import { SignUp } from "@/interfaces/contact";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useState } from "react";
 import contact from "/next_js/my-next-app/public/images/contact-us.png";
 import { useRouter } from "next/navigation";
 
+
+import cookies from "js-cookie";
+
 export default function FormLogin() {
   const router = useRouter();
+  const [login, setLogin] = useState({});
+  const [token, setToken] = useState();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<SignUp>();
 
-  const [login, setLogin] = useState({});
-
   const logIn = async () => {
     try {
       const con = await axios.post("http://localhost:4000/login", login);
-      if (con.data === 1) {
-        alert("Login successfully!");
+      if (con.data.type) {
+        console.log(con)
+        cookies.set("Token", con.data?.token);
+        setToken(con.data?.token);
         router.push("/feature/select");
-      } else alert("Login Failed. Username or password incorrect!");
+      } else {
+        alert(con.data.message);
+        router.refresh();
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -36,7 +45,6 @@ export default function FormLogin() {
     setLogin({ ...login, [e.target.name]: e.target.value });
   };
   const onSubmit = (e: SignUp) => {
-    console.log(e);
     logIn();
   };
 
@@ -74,8 +82,8 @@ export default function FormLogin() {
             <br />
             <input
               {...register("email", {
-                required: true,
-                pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                required: false,
+                // pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
               })}
               className="w-96 rounded-lg border-2 p-1"
               placeholder="Type here"

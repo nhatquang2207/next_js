@@ -4,43 +4,44 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-
+import cookies from "js-cookie";
 type Props = {
   params: { id: string };
 };
 export default function Page({ params }: Props) {
+  const token = cookies.get("Token");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Data>();
   const [edit, setEdit] = useState({});
-  const submitChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const submitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEdit({ ...edit, [e.target.name]: e.target.value });
   };
   const onSubmit = (data: Data) => {
-    console.log(data);
     update();
   };
   const router = useRouter();
   const update = async () => {
     try {
-      const con = await axios.put(
+      const response = await axios.put(
         `http://localhost:4000/update_info/${params.id}`,
         edit,
+        { headers: { Authentication: `Bearer ${token}` } },
       );
-      console.log(con.data);
-      //  alert("Updated Successfully! ")
-
-      router.push("/feature/select");
-      router.refresh();
+      alert(response.data.message)
+      router.push('/feature/select')
+      router.refresh()
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <div>
-      <div className="flex items-center justify-center">
+    <div className="h-screen">
+      <h1 className="text-center text-2xl">Update product</h1>
+      <div className="flex items-center justify-center ">
         <form action="" className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="">Name</label>{" "}
           <input
